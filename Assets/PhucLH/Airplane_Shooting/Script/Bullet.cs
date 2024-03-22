@@ -16,4 +16,13 @@ public class Bullet : MonoBehaviour
     {
         transform.position += new Vector3(0, speed * Time.deltaTime, 0);
     }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Enemy"))
+        {
+            Destroy(gameObject);
+        }    
+
+    }
 }

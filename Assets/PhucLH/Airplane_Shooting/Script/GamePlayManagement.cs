@@ -2,29 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GamePlayManagement : MonoBehaviour
 {
+    public static GamePlayManagement Instance; 
+    
     public Enemy enemyPrefab;
     public GameObject bulletPrefab;
-    private ShipMovement ship;
     public float spawnBulletTime;
     public float moveTime;
     private int squadStatus = 0;
+    public int Score = 0;
+    public Text scoreText;
     private List<Enemy> enemyList = new List<Enemy>();
     // Start is called before the first frame update
+    
+    private void Awake()
+    {
+        Instance = this;
+    }    
+    
     void Start()
     {
         spawnEnemy();
-        ship = FindObjectOfType<ShipMovement>();
-        StartCoroutine(spawnBullet());
         StartCoroutine(squadLoop());
+        StartCoroutine(spawnBullet());
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        scoreText.text = Score.ToString();
     }
 
     private IEnumerator spawnBullet()
@@ -32,7 +42,7 @@ public class GamePlayManagement : MonoBehaviour
         while(true)
         {
             yield return new WaitForSeconds(spawnBulletTime);
-            var position = ship.transform.position;
+            var position = ShipMovement.Instance.transform.position;
             GameObject bullet = Instantiate(bulletPrefab, position, Quaternion.identity);
         }    
     }

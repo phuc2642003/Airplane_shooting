@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public int health;
+    private int health=5;
     private bool canBeDamaged;
     public float changeSquadTime;
 
@@ -18,11 +18,16 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(health==0)
+        {
+            gameObject.SetActive(false);
+            GamePlayManagement.Instance.Score++;
+        }      
     }
 
     IEnumerator MoveCoroutine(Vector3 target)
     {
+        canBeDamaged = false;
         float elapsedTime = 0;
 
         Vector3 startingPosition = transform.position;
@@ -35,12 +40,22 @@ public class Enemy : MonoBehaviour
         }
 
         transform.position = target;
+        canBeDamaged = true;
     }
 
 
     public void Moving(Vector3 position)
     {
         StartCoroutine(MoveCoroutine(position));
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Bullet")&&canBeDamaged)
+        {
+            health--;
+        }    
+            
     }
 
 

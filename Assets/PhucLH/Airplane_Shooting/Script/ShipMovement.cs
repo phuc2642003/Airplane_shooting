@@ -5,9 +5,15 @@ using UnityEngine;
 
 public class ShipMovement : MonoBehaviour
 {
+    public static ShipMovement Instance;
+    
     [SerializeField] protected Vector3 worldPosition;
     [SerializeField] protected float mouseSpeed = 0.1f;
 
+    private void Awake()
+    {
+        Instance = this;
+    }
     // Update is called once per frame
     void Update()
     {
